@@ -1,0 +1,4 @@
+venv/
+account-service/requirements.txt
+account-service/.env
+*__pycache__
