@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  accounts-db:
+    image: mongo:4.4
+    container_name: accounts-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - accounts-db-data:/data/db
+
+  accounts-service:
+    build: ./account-service
+    container_name: account-service
+    ports:
+      - "8000:8000"
+    environment:
+      MONGO_URI: mongodb://accounts-db:27017/accounts
+    depends_on:
+      - accounts-db
+
+volumes:
+  accounts-db-data:

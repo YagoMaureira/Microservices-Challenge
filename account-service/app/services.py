@@ -1,6 +1,5 @@
 from app.models import Account
 from sanic.response import json
-from bson import ObjectId
 
 
 class AccountService:
