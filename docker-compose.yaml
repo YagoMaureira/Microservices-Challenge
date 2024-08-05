@@ -19,5 +19,26 @@ services:
     depends_on:
       - accounts-db
 
+  transactions-db:
+    image: mongo:4.4
+    container_name: transactions-db
+    ports:
+      - "27018:27017"
+    volumes:
+      - transactions-db-data:/data/db
+
+  transactions-service:
+    build: ./transactions-service
+    container_name: transactions-service
+    ports:
+      - "8001:8000"
+    environment:
+      MONGO_URI: mongodb://transactions-db:27017/transactions
+      ACCOUNT_API_URL: http://accounts-service:8000
+    depends_on:
+      - transactions-db
+      - accounts-service
+
 volumes:
   accounts-db-data:
+  transactions-db-data:

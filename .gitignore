@@ -2,3 +2,4 @@ venv/
 account-service/.env
 transactions-service/.env
 *__pycache__
+transactions-service/tests/.env

@@ -1,7 +1,7 @@
 from app.models import Transaction
-from app.config import ACCOUNT_API_URL  
 from sanic.response import json
 import aiohttp
+import os
 
 
 class TransactionService:
@@ -13,8 +13,8 @@ class TransactionService:
         transaction = Transaction.from_dict(data)
 
         async with aiohttp.ClientSession() as session:
-            sender_response = await session.get(f"{ACCOUNT_API_URL}/accounts/{transaction.sender_cvu}")
-            receiver_response = await session.get(f"{ACCOUNT_API_URL}/accounts/{transaction.receiver_cvu}")
+            sender_response = await session.get(f"{os.getenv('ACCOUNT_API_URL')}/accounts/{transaction.sender_cvu}")
+            receiver_response = await session.get(f"{os.getenv('ACCOUNT_API_URL')}/accounts/{transaction.receiver_cvu}")
 
             if sender_response.status != 200 or receiver_response.status != 200:
                 return json({"status": "error", "message": "Sender or receiver account not found"}, status=404)
@@ -29,8 +29,8 @@ class TransactionService:
             sender_new_balance = sender_account["data"]["balance"] - transaction.amount
             receiver_new_balance = receiver_account["data"]["balance"] + transaction.amount
 
-            await session.put(f"{ACCOUNT_API_URL}/accounts/{transaction.sender_cvu}", json={"balance": sender_new_balance})
-            await session.put(f"{ACCOUNT_API_URL}/accounts/{transaction.receiver_cvu}", json={"balance": receiver_new_balance})
+            await session.put(f"{os.getenv('ACCOUNT_API_URL')}/accounts/{transaction.sender_cvu}", json={"balance": sender_new_balance})
+            await session.put(f"{os.getenv('ACCOUNT_API_URL')}/accounts/{transaction.receiver_cvu}", json={"balance": receiver_new_balance})
 
         result = await self.collection.insert_one(transaction.to_dict())
         return json({"status": "success", "data": {"id": str(result.inserted_id)}}, status=201)
