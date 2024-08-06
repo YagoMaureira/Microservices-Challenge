@@ -26,8 +26,8 @@ def app():
 def test_create_transfer(app):
     # Making the request to create a transfer
     _, response = app.test_client.post("/transactions", json={
-        "sender_cvu": "123456",
-        "receiver_cvu": "123456789",
+        "sender_cvu": "1234567891011121314456",
+        "receiver_cvu": "1234567891011121314151",
         "amount": 100
     })
 
@@ -35,6 +35,6 @@ def test_create_transfer(app):
 
 
 def test_get_transactions_by_cvu(app):
-    _, response = app.test_client.get("/transactions/cvu/123456")
+    _, response = app.test_client.get("/transactions/cvu/1234567891011121314456")
 
     assert response.status == 200
