@@ -121,7 +121,7 @@ Cuerpo de la Solicitud:
 }
 ```
 
-####Obtener Transacciones por CVU
+#### Obtener Transacciones por CVU
 - URL: /transactions/cvu/cvu
 - Método: GET
 - Descripción: Obtiene todas las transacciones asociadas a un CVU específico.
